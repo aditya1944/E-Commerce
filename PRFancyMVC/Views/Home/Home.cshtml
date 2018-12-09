@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+@*<h2>Home</h2>*@
+
+<div id="mycarousel" class="carousel slide" data-ride="carousel">
+    <ul class="carousel-indicators">
+        <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#mycarousel" data-slide-to="1"></li>
+        <li data-target="#mycarousel" data-slide-to="2"></li>
+        @*<li data-target="#mycarousel" data-slide-to="3" class="active"></li>
+            <li data-target="#mycarousel" data-slide-to="4" class="active"></li>*@
+    </ul>
+    <div class="carousel-inner">
+        <div class="carousel-item item active">
+            @*active for visiblity for carousel*@
+            <img class="img-fluid" src="~/Content/Images/Evening Dresses 7.jpg" alt="Evening Dress" />
+            
+        </div>
+        <div class="carousel-item item">
+            <img class="img-fluid" src="~/Content/Images/Tony-Chaaya-Haute-Couture-Collection-2016-Lebanon-Evening-Dresses-31.jpg" alt="Evening Dress" />
+            @*<div class="carousel-caption" style="color:chocolate">
+                    <h2>Lebanon Dress</h2>
+                </div>*@
+        </div>
+        <div class="carousel-item item">
+            <img class="img-fluid" src="~/Content/Images/Versace atelier 2.jpg" alt="Evening Dress" />
+            @*<div class="carousel-caption" style="color:chocolate">
+                    <h2>Versace atelier</h2>
+                </div>*@
+        </div>
+    </div>
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#mycarousel" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#mycarousel" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>
+<div id="belowCarousel">
+    <div id="category">
+        <h2>Category</h2>
+        @{ int i = 0;}
+        @foreach (var item in ViewBag.lstCategories)
+        {
+            if (i == 0)
+            {
+                <button id="icat"   onmouseover='foo(this)' value="@(item.categoryId)">@item.categoryName</button>
+            }
+            else
+            {
+                <button onmouseover='foo(this)' value="@(item.categoryId)">@item.categoryName</button>
+            }
+            ++i;
+        }
+    </div>
+    <div id="item">
+            <div class="call-out" style="display:flex;">
+                <p style="margin:auto">Select Category to see Product.</p>
+            </div>
+            
+    </div>
+</div>
+
+
+
+<script>
+    function login() {
+        var div = document.createElement("div");
+        div.className = "container";
+        document.body.appendChild(div);
+    }
+    function foo(obj) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var lstProducts = eval("(" + this.responseText + ")");
+                var parent = document.getElementById("item");
+                while (parent.firstChild) {
+                    parent.removeChild(parent.firstChild);
+                }
+                for (i = 0; i < lstProducts.length; ++i) {
+                    var button = document.createElement("button");
+                    button.setAttribute("onClick","goto(this.value)")
+                    var div = document.createElement("div");
+                    div.className = "call-out";
+                   
+                    var image = document.createElement("img");
+                    image.src = "/admin/GetPhoto?productId=" + lstProducts[i].productId + '&i=1';
+                    
+                    image.addEventListener("error", function () {
+                        var index = this.src.lastIndexOf('i') + 2;
+                        var temp = this.src;
+                        var newNum = Number(temp[index]) + 1;
+                        var substr = temp.substring(0, index);
+                        this.src = substr + newNum;
+
+                    });
+                    image.style.maxHeight = "90%";
+                    image.style.maxWidth = "100%";
+                    var heading = document.createElement("h6");
+                    var headingText = document.createTextNode(lstProducts[i].productName);
+                    
+                    
+                    heading.appendChild(headingText);
+                    
+                    button.value = lstProducts[i].productId;
+                    
+                    div.appendChild(image);
+                    div.appendChild(heading);
+                    button.appendChild(div);
+                    parent.appendChild(button);
+                }
+            }
+            var parent = document.getElementById("item");
+            var noOfchildren = parent.children.length;
+            if (noOfchildren == 0) {
+                var div = document.createElement("div");
+                div.className = "call-out";
+                var heading = document.createElement("h4");
+                var headingText = document.createTextNode("No product in this category");
+                heading.appendChild(headingText);
+                div.appendChild(heading);
+                parent.appendChild(div);
+                parent.children[0].style.cssText = "margin:auto";
+            }
+
+        }
+        xmlHttp.open("POST", "/home/GetProductsByCategory", true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.send("categoryId=" + obj.value);
+    }
+    function goto(val) {
+        location.href = "/home/ProductDetails?productId=" + val;
+    }
+</script>
+<style>
+    #belowCarousel{ 
+        display:flex;
+        align-items:flex-start;
+        margin-top:30px;
+        justify-content:space-between
+    }
+    #category button{
+        width:140px;
+        overflow:hidden;
+    }
+    .call-out {
+        padding: 10px;
+        margin: 0px auto 0px auto;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: #ccb9da;
+        background-color:lightsteelblue;
+        width: 200px;
+        height: 150px;
+    }
+    #mycarousel{
+        margin-left:8%;
+        margin-right:8%;
+    }
+    #item button {
+        border: none;
+        padding: 0px;
+        border-radius: 8px;
+        margin: 10px auto 10px auto;
+    }
+    .carousel .item {
+        height: 350px;
+    }
+    #category {
+        padding-top:10px;
+        min-width:150px;
+        flex: 1;
+        padding-left:4px;
+        padding-right:4px;
+        text-align:center;
+        background-color: #c0dbe2;
+        background-color:crimson;
+        border-radius:20px;
+        padding-bottom:20px;
+    }
+    #item {
+        flex: 3;
+        padding:20px;
+        display: flex;
+        align-items:center;
+        justify-content: space-between;
+        /*background-color: #cdf1c3;*/
+        background-color:chocolate;
+        border-radius: 20px;
+        flex-wrap: wrap;
+        min-height:325px;
+    }
+    @@media screen and (min-width:768px){
+        #belowCarousel{
+            margin-left:40px;
+            margin-right:40px;
+        }
+    }
+    #category button {
+        font-size: medium;
+        border: none;
+        display: block;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border-radius: 8px;
+        padding-left: 20px;
+        padding-right: 20px;
+        cursor: grab;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #icat {
+        margin-top: 40px !important;
+    }
+    #category button:hover{
+        border-style:none solid none none;
+        border-width:5px;
+        border-color:aqua;
+    }
+    .item img {
+        /*position: absolute;
+        top: 0;
+        left: 0;*/
+        min-height: 350px;
+    }
+</style>

@@ -1,0 +1,140 @@
+﻿@model PRFancyMVC.Models.product
+@using PRFancyMVC.HtmlHelpers
+@{
+    ViewBag.Title = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2 style="margin-left:10%">@Html.DisplayFor(model => model.productName)</h2>
+
+<br />
+
+<div id="image" class="container-fluid">
+    <div id="imageShow">
+        
+    </div>
+    <div id="imageBlock">
+        @Html.Images(Model.productId, "No Image", 1)
+
+        @Html.Images(Model.productId, "No Image", 2)
+
+        @Html.Images(Model.productId, "No Image", 3)
+
+        @Html.Images(Model.productId, "No Image", 4)
+    </div>
+</div>
+<br />
+<div style="margin-left:10%">
+    <h3>Product Description</h3>
+    <p style="margin-right:10%">@Html.DisplayFor(model => model.productDesc)</p>
+    <h3>Price</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>Size</th>
+                <th>Rent*</th>
+                <th>Buy*</th>
+            </tr>
+            <tr>
+                <td>Small</td>
+                <td>@Html.DisplayFor(model => model.sRentPrice)</td>
+                <td>@Html.DisplayFor(model => model.sPrice)</td>
+            </tr>
+            <tr>
+                <td>Medium</td>
+                <td>@Html.DisplayFor(model => model.mRentPrice)</td>
+                <td>@Html.DisplayFor(model => model.mPrice)</td>
+            </tr>
+            <tr>
+                <td>Large</td>
+                <td>@Html.DisplayFor(model => model.lRentPrice)</td>
+                <td>@Html.DisplayFor(model => model.lPrice)</td>
+            </tr>
+            <tr>
+                <td>Extra Large</td>
+                <td>@Html.DisplayFor(model => model.vlRentPrice)</td>
+                <td>@Html.DisplayFor(model => model.vlPrice)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div style="display:flex">
+    <div style="flex:1"></div>
+    <p style="font-size:small;font-weight:bold">*All figures in INR</p>
+</div>
+
+<script>
+    window.onload = start();
+    
+    function testImage() {
+        
+        var lstImage = document.getElementById("imageBlock").getElementsByTagName("img");
+        for (i = 0; i < lstImage.length; ++i) {
+            lstImage[i].addEventListener('error', function () {
+                this.parentNode.removeChild(this);
+            });
+        }
+        
+    }
+    function image() {
+        var lstImages = document.querySelectorAll("#imageBlock img");
+        for (i = 0; i < lstImages.length; ++i) {
+            lstImages[i].addEventListener('click', function () {
+                document.querySelector("#imageShow img").src = this.src;
+            });
+        }
+        
+    }
+    function loadImage() {
+        var imagesList = document.getElementById("imageBlock");
+        var imageContainer = document.getElementById("imageShow");
+        var x = imagesList.children[2].cloneNode(true);
+        imageContainer.appendChild(x);
+    }
+    function start() {
+        testImage();
+        image();
+        loadImage();
+    }
+    
+</script>
+<style>
+   img{
+       margin-bottom:15px;
+   }
+    #parent{
+        display:flex;
+    }
+    #image{
+        display:flex;
+        flex-flow:column;
+    }
+    #imageBlock{
+        display:flex;
+        margin-left:10%;
+        margin-right:10%;
+        justify-content:space-between;
+    }
+    
+    #imageBlock img {
+        border:1px solid red;
+         max-height: 50px;
+         max-width: 80px;
+         
+    }
+    #imageBlock img:hover{
+        box-shadow:0px 0px 10px 1px red;
+    }
+    #imageShow{
+        margin:0 auto;
+        height:auto;
+    }
+    #imageShow img{
+        max-width:100%;
+        height:300px;
+    }
+    #details{
+        
+    }
+</style>
+

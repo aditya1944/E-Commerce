@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "AdminHome";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<div style="display:flex">
+    <div>
+        <h3>Admin Home</h3>
+    </div>
+    <div style="flex:1">
+
+    </div>
+    <div>
+        @if (Request.QueryString["user"] != null)
+        {
+            <h3>Welcome @Request.QueryString["user"]</h3>
+        }
+    </div>
+</div>
+
+
+
+
+<br />
+<div style="display:flex;">
+    <h3 style="padding:5px 20px;font-weight:bold;background-color:darkseagreen;border-radius:8px;">Add</h3>
+    <div style="flex:1;"></div>
+</div>
+<div id="outerDiv">
+    <button class="button" onclick="location.href='/admin/AddProduct'">
+        <span style="font-size:20px;font-weight:bold">Add Product</span>
+    </button>
+    <button class="button" onclick="location.href='/admin/AddCategory'">
+        <span style="font-size:20px;font-weight:bold">Add Category</span>
+    </button>
+    
+
+</div>
+<hr />
+<div style="display:flex;">
+    <h3 style="padding:5px 20px;font-weight:bold;background-color:darkseagreen;border-radius:8px;">View, Update and Delete</h3>
+    <div style="flex:1;"></div>
+</div>
+<div id="outerDiv">
+
+    <button class="button" onclick="location.href='/admin/ViewAllProducts'">
+        <span style="font-size:20px;font-weight:bold">Products</span>
+    </button>
+
+    <button class="button" onclick="location.href='/admin/ViewAllCategory'">
+        <span style="font-size:20px;font-weight:bold">Categories</span>
+    </button>
+
+   
+
+
+    <button class="button" onclick="location.href='/admin/ImageHome'">
+        <span style="font-size:20px;font-weight:bold">Images</span>
+    </button>
+
+</div>
+<style>
+    #outerDiv {
+        padding: 10px;
+        display: flex;
+        background-color: red;
+        border-radius: 8px;
+        /*justify-content: space-between;*/
+        flex-wrap: wrap;
+    }
+
+    .button {
+        border: none;
+        text-align: center;
+        border-radius: 8px;
+        margin: 5px auto;
+        align-items: center;
+        flex-basis: 20%;
+        background-color: pink;
+        min-width: 150px;
+        min-height: 100px;
+    }
+</style>

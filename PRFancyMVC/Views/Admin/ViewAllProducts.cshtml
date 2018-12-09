@@ -1,0 +1,93 @@
+﻿@model IEnumerable<PRFancyMVC.Models.product>
+
+@{
+    ViewBag.Title = "ViewAllProducts";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Products List</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.productName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.category.categoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.vlPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sRentPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.mRentPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lRentPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.vlRentPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.productDesc)
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.productName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category.categoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vlPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sRentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mRentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lRentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vlRentPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.productDesc)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "EditProduct", new { productId = item.productId }) |
+                @Html.ActionLink("Delete", "DeleteProduct", new { productId = item.productId })
+            </td>
+        </tr>
+    }
+
+</table>

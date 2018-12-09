@@ -1,0 +1,81 @@
+﻿@model PRFancyMVC.Models.ProductImage
+
+@{
+    ViewBag.Title = "EditImage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Image</h2>
+
+
+@using (Html.BeginForm("SaveImage","Admin",Model,FormMethod.Post,new {enctype="multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.productName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.productName, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+            @Html.ValidationMessageFor(model => model.Product.productName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Category.categoryName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Category.categoryName, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+            @Html.ValidationMessageFor(model => model.Category.categoryName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImageData1, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.Image1, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="file" name="ImageData1" id="ImageData1" accept="image/*"  onchange="fileCheck(this);" />
+            @Html.ValidationMessageFor(model => model.ImageData1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImageData2, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.Image2, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="file" name="ImageData2" id="ImageData2" accept="image/*" onchange="fileCheck(this);" />
+            @Html.ValidationMessageFor(model => model.ImageData2, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImageData3, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.Image3, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="file" name="ImageData3" id="ImageData3" accept="image/*" onchange="fileCheck(this);" />
+            @Html.ValidationMessageFor(model => model.ImageData3, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImageData4, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.Image3, new { htmlAttributes = new { @class = "form-control" } })*@
+            <input type="file" name="ImageData4" id="ImageData4" accept="image/*" onchange="fileCheck(this);" />
+            @Html.ValidationMessageFor(model => model.ImageData4, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

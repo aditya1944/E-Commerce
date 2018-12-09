@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRFancy</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body style="background-color:darksalmon">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+        <div class="container">
+            @Html.ActionLink("PR Fancy", "home", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        @if (Session["user"] == null)
+                        {
+                            @Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink(Session["user"].ToString().Split('@')[0], "AdminHome", "Admin", new { area = "" }, new { @class = "nav-link" })
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container-fluid body-content">
+        
+        @RenderBody()
+        
+            <hr />
+            <footer>
+                <p style="text-align:center;">&copy; @DateTime.Now.Year - PR Fancy</p>
+            </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+

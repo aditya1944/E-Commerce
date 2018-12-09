@@ -1,0 +1,127 @@
+﻿@model PRFancyMVC.Models.ProductImage
+@using PRFancyMVC.HtmlHelpers
+@{
+    ViewBag.Title = "DeleteImage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Delete Image</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal" id="list">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.categoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.categoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.productName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.productName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image1)
+        </dt>
+
+        <dd>
+            @Html.Images(Model.productId, "NoImage", 1)
+            <br />
+            
+            @using (Html.BeginForm("SaveDeleteImage","Admin",new {productId = Model.productId,i=1 }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" onclick="foo1()" />
+                </div>
+            }
+            <br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image2)
+        </dt>
+        
+        <dd>
+            @Html.Images(Model.productId, "NoImage", 2)
+            @using (Html.BeginForm("SaveDeleteImage", "Admin", new { productId = Model.productId, i = 2 }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" onclick="foo2()"/>
+                </div>
+            }
+            <br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image3)
+        </dt>
+
+        <dd>
+            @Html.Images(Model.productId, "NoImage", 3)
+            @using (Html.BeginForm("SaveDeleteImage", "Admin", new { productId = Model.productId, i = 3 }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" onclick="foo3()"/>
+                </div>
+            }
+            <br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image4)
+        </dt>
+
+        <dd>
+            @Html.Images(Model.productId, "NoImage", 4)
+            @using (Html.BeginForm("SaveDeleteImage", "Admin", new { productId = Model.productId, i = 4 }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-default" onclick="foo4()"/>
+                </div>
+            }
+            <br />
+        </dd>
+
+    </dl>
+
+    
+</div>
+
+<style>
+    .image {
+        max-height: 300px;
+        max-width: 200px;
+        border-radius: 6px;
+    }
+</style>
+<script>
+    function foo1() {
+        //var obj = document.getElementById()
+    }
+    function foo2() {
+        console.log("Its Kissy");
+    }
+    function foo3() {
+        console.log("Its Kissy");
+    }
+    function foo4() {
+        console.log("Its Kissy");
+    }
+</script>
+

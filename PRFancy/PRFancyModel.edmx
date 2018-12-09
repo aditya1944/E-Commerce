@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PRFancyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="categoryName" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="productName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="categoryId" Type="char" MaxLength="5" />
+          <Property Name="sPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="mPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="lPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="vlPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="sRentPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="mRentPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="lRentPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="vlRentPrice" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="productDesc" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="productImage">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="productImage" Type="image" />
+          <Property Name="productImage2" Type="image" />
+          <Property Name="productImage3" Type="image" />
+          <Property Name="productImage4" Type="image" />
+          <Property Name="categoryId" Type="char" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="roleId" Type="int" />
+          <Property Name="password" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__productIm__produ__5FB337D6">
+          <End Role="product" Type="Self.product" Multiplicity="1" />
+          <End Role="productImage" Type="Self.productImage" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="productImage">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_product_category">
+          <End Role="category" Type="Self.category" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productImage_category">
+          <End Role="category" Type="Self.category" Multiplicity="0..1" />
+          <End Role="productImage" Type="Self.productImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="productImage">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ufn_GenerateNewCategoryId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="char" />
+        <Function Name="ufn_GenerateNewProductId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="char" />
+        <Function Name="ufn_GenerateNewUserId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="char" />
+        <Function Name="usp_addUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="char" Mode="In" />
+          <Parameter Name="username" Type="varchar" Mode="In" />
+          <Parameter Name="roleId" Type="int" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="PRFancyModelStoreContainer">
+          <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productImage" EntityType="Self.productImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__productIm__produ__5FB337D6" Association="Self.FK__productIm__produ__5FB337D6">
+            <End Role="product" EntitySet="product" />
+            <End Role="productImage" EntitySet="productImage" />
+          </AssociationSet>
+          <AssociationSet Name="fk_product_category" Association="Self.fk_product_category">
+            <End Role="category" EntitySet="category" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productImage_category" Association="Self.fk_productImage_category">
+            <End Role="category" EntitySet="category" />
+            <End Role="productImage" EntitySet="productImage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PRFancyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="categoryName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="products" Relationship="Self.fk_product_category" FromRole="category" ToRole="product" />
+          <NavigationProperty Name="productImages" Relationship="PRFancyModel.fk_productImage_category" FromRole="category" ToRole="productImage" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="productName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="categoryId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="sPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="mPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="lPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="vlPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="sRentPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="mRentPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="lRentPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="vlRentPrice" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="productDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="category" Relationship="Self.fk_product_category" FromRole="product" ToRole="category" />
+          <NavigationProperty Name="productImage" Relationship="PRFancyModel.FK__productIm__produ__5FB337D6" FromRole="product" ToRole="productImage" />
+        </EntityType>
+        <EntityType Name="productImage">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="productImage1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="productImage2" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="productImage3" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="productImage4" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="categoryId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="category" Relationship="PRFancyModel.fk_productImage_category" FromRole="productImage" ToRole="category" />
+          <NavigationProperty Name="product" Relationship="PRFancyModel.FK__productIm__produ__5FB337D6" FromRole="productImage" ToRole="product" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="roleId" Type="Int32" />
+          <Property Name="password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_product_category">
+          <End Role="category" Type="Self.category" Multiplicity="0..1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PRFancyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categories" EntityType="Self.category" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="productImages" EntityType="Self.productImage" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="fk_product_category" Association="Self.fk_product_category">
+            <End Role="category" EntitySet="categories" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <FunctionImport Name="usp_addUsers">
+            <Parameter Name="userId" Mode="In" Type="String" />
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="roleId" Mode="In" Type="Int32" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="fk_productImage_category" Association="PRFancyModel.fk_productImage_category">
+            <End Role="category" EntitySet="categories" />
+            <End Role="productImage" EntitySet="productImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__productIm__produ__5FB337D6" Association="PRFancyModel.FK__productIm__produ__5FB337D6">
+            <End Role="product" EntitySet="products" />
+            <End Role="productImage" EntitySet="productImages" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="fk_productImage_category">
+          <End Type="PRFancyModel.category" Role="category" Multiplicity="0..1" />
+          <End Type="PRFancyModel.productImage" Role="productImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="productImage">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__productIm__produ__5FB337D6">
+          <End Type="PRFancyModel.product" Role="product" Multiplicity="1" />
+          <End Type="PRFancyModel.productImage" Role="productImage" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="productImage">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PRFancyModelStoreContainer" CdmEntityContainer="PRFancyEntities">
+          <EntitySetMapping Name="categories">
+            <EntityTypeMapping TypeName="PRFancyModel.category">
+              <MappingFragment StoreEntitySet="category">
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="categoryName" ColumnName="categoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="PRFancyModel.product">
+              <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="productName" ColumnName="productName" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="sPrice" ColumnName="sPrice" />
+                <ScalarProperty Name="mPrice" ColumnName="mPrice" />
+                <ScalarProperty Name="lPrice" ColumnName="lPrice" />
+                <ScalarProperty Name="vlPrice" ColumnName="vlPrice" />
+                <ScalarProperty Name="sRentPrice" ColumnName="sRentPrice" />
+                <ScalarProperty Name="mRentPrice" ColumnName="mRentPrice" />
+                <ScalarProperty Name="lRentPrice" ColumnName="lRentPrice" />
+                <ScalarProperty Name="vlRentPrice" ColumnName="vlRentPrice" />
+                <ScalarProperty Name="productDesc" ColumnName="productDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productImages">
+            <EntityTypeMapping TypeName="PRFancyModel.productImage">
+              <MappingFragment StoreEntitySet="productImage">
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="productImage1" ColumnName="productImage" />
+                <ScalarProperty Name="productImage2" ColumnName="productImage2" />
+                <ScalarProperty Name="productImage3" ColumnName="productImage3" />
+                <ScalarProperty Name="productImage4" ColumnName="productImage4" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="PRFancyModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_addUsers" FunctionName="PRFancyModel.Store.usp_addUsers" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

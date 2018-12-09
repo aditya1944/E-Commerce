@@ -1,0 +1,73 @@
+﻿@model IEnumerable<PRFancyMVC.Models.ProductImage>
+@using PRFancyMVC.HtmlHelpers
+@{
+    ViewBag.Title = "ImageHome";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Image Home</h2>
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.categoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model=>model.Product.productName)
+       </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image4)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.categoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.productName)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Image1)*@
+            @Html.Images(item.productId,"No Pic",1)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Image2)*@
+            @Html.Images(item.productId, "No Pic", 2)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Image3)*@
+            @Html.Images(item.productId, "No Pic", 3)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Image4)*@
+            @Html.Images(item.productId, "No Pic", 4)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditImage", new { productId = item.productId}) |
+            @Html.ActionLink("Delete", "DeleteImage", new { productId = item.productId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<style>
+    .image{
+        max-height:300px;
+        max-width:200px;
+        border-radius:6px;
+    }
+</style>
