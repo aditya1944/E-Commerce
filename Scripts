@@ -1,0 +1,132 @@
+create database PRFancy
+use database PRFancy
+
+-- Category Table
+CREATE TABLE [dbo].[category] (
+    [categoryId]   CHAR (5)     NOT NULL,
+    [categoryName] VARCHAR (40) NOT NULL,
+    CONSTRAINT [pk_category] PRIMARY KEY CLUSTERED ([categoryId] ASC),
+    UNIQUE NONCLUSTERED ([categoryName] ASC)
+);
+-- User Table
+CREATE TABLE [dbo].[users] (
+    [userId]   CHAR (5)     NOT NULL,
+    [username] VARCHAR (30) NOT NULL,
+    [roleId]   INT          DEFAULT ((2)) NULL,
+    [password] VARCHAR (30) NOT NULL,
+    CONSTRAINT [pk_users] PRIMARY KEY CLUSTERED ([userId] ASC),
+    UNIQUE NONCLUSTERED ([username] ASC)
+);
+-- Product
+CREATE TABLE [dbo].[product] (
+    [productId]   CHAR (5)       NOT NULL,
+    [productName] VARCHAR (50)   NOT NULL,
+    [categoryId]  CHAR (5)       NULL,
+    [sPrice]      NUMERIC (6, 2) NULL,
+    [mPrice]      NUMERIC (6, 2) NULL,
+    [lPrice]      NUMERIC (6, 2) NULL,
+    [vlPrice]     NUMERIC (6, 2) NULL,
+    [sRentPrice]  NUMERIC (6, 2) NULL,
+    [mRentPrice]  NUMERIC (6, 2) NULL,
+    [lRentPrice]  NUMERIC (6, 2) NULL,
+    [vlRentPrice] NUMERIC (6, 2) NULL,
+    [productDesc] VARCHAR (200)  NULL,
+    CONSTRAINT [pk_product] PRIMARY KEY CLUSTERED ([productId] ASC),
+    CONSTRAINT [fk_product_category] FOREIGN KEY ([categoryId]) REFERENCES [dbo].[category] ([categoryId])
+);
+
+
+GO
+
+CREATE trigger product_ProductImage on product
+for insert as
+begin
+	insert into productImage (productId,categoryId) select productId,categoryId from inserted
+end
+
+-- Product Image Table
+CREATE TABLE [dbo].[productImage] (
+    [productId]     CHAR (5) NOT NULL,
+    [productImage]  IMAGE    NULL,
+    [productImage2] IMAGE    NULL,
+    [productImage3] IMAGE    NULL,
+    [productImage4] IMAGE    NULL,
+    [categoryId]    CHAR (5) NULL,
+    CONSTRAINT [pk_product_productImage] PRIMARY KEY CLUSTERED ([productId] ASC),
+    FOREIGN KEY ([productId]) REFERENCES [dbo].[product] ([productId]),
+    CONSTRAINT [fk_productImage_category] FOREIGN KEY ([categoryId]) REFERENCES [dbo].[category] ([categoryId])
+);
+
+-- Function to generate New Product Id
+
+CREATE FUNCTION ufn_GenerateNewProductId()
+RETURNS CHAR(5)
+AS
+BEGIN
+
+	DECLARE @ProductId CHAR(5)
+	
+	IF NOT EXISTS(SELECT productId FROM product)
+		SET @ProductId='P1000'
+		
+	ELSE
+		SELECT @ProductId='P'+CAST(CAST(SUBSTRING(MAX(productId),2,4) AS INT)+1 AS CHAR) FROM product
+
+	RETURN @ProductId
+	
+END
+
+-- Function to generate New Category Id
+
+create function ufn_GenerateNewCategoryId()
+returns char(5)
+as
+begin
+	declare @categoryId char(5)
+
+	if not exists(select category.categoryId from category)
+		SET @categoryId = 'C1000'
+	else
+		select @categoryId ='C'+CAST(CAST(SUBSTRING(MAX(categoryId),2,4) AS INT)+1 AS CHAR) from category
+
+	return @categoryId
+end
+
+-- Function to generate New User Id
+
+create function ufn_GenerateNewUserId()
+returns char(5)
+as
+begin
+	declare @userId char(5)
+
+	if not exists(select userId from users)
+		SET @userId = 'U1000'
+	else
+		select @userId ='U'+CAST(CAST(SUBSTRING(MAX(userId),2,4) AS INT)+1 AS CHAR) from users
+
+	return @userId
+end
+
+--Function to add user
+
+create procedure usp_addUsers(
+	@userId char(5),
+	@username varchar(30),
+	@roleId int,
+	@password varchar(30)
+)
+as
+begin
+	if(@userId is null)
+		return -1 --bad return
+	if(@password is null)
+		return -2 --bad return
+	begin try
+		insert into users values(@userId,@username,@roleId,@password)
+		return 1 --good return
+	end try
+	begin catch
+		return -99 --exception return
+	end catch
+end
